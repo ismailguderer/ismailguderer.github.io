@@ -1,0 +1,84 @@
+---
+import { cv } from '../lib/cv';
+const { publications, person } = cv;
+const pubs = [...publications].sort((a, b) => b.year.localeCompare(a.year));
+const tags = [...new Set(pubs.flatMap((p) => p.tags))].sort();
+const years = [...new Set(pubs.map((p) => p.year.slice(0, 4)))];
+const doiOf = (p: { doi?: string | null; url?: string | null }) =>
+  p.doi ?? (p.url?.match(/doi\.org\/(10\..+)$/i)?.[1] ?? null);
+---
+{pubs.length === 0 ? (
+  <p class="muted">Publications will appear here.</p>
+) : (
+  <div class="pubs">
+    {tags.length > 1 && (
+      <div class="chips no-print" role="group" aria-label="Filter publications">
+        <button class="chip" type="button" data-filter="" aria-pressed="true">All <span class="n">{pubs.length}</span></button>
+        {tags.map((t) => (
+          <button class="chip" type="button" data-filter={t} aria-pressed="false">
+            {t} <span class="n">{pubs.filter((p) => p.tags.includes(t)).length}</span>
+          </button>
+        ))}
+      </div>
+    )}
+
+    {years.map((y) => (
+      <div class="year" data-year={y}>
+        <h3 class="y tnum">{y}</h3>
+        <ol class="list">
+          {pubs.filter((p) => p.year.startsWith(y)).map((p) => (
+            <li class="pub" data-tags={p.tags.join('|')}>
+              <p class="title">{p.url ? <a href={p.url}>{p.title}</a> : p.title}</p>
+              <p class="authors small">
+                {p.authors.map((a, i) => (
+                  <>{person.authorName.includes(a) ? <strong>{a}</strong> : a}{i < p.authors.length - 1 ? ', ' : ''}</>
+                ))}
+              </p>
+              <p class="venue small muted">
+                <em>{p.venue}</em>{p.status && <span class="status">{p.status}</span>}
+              </p>
+              {doiOf(p) && <p class="doi tnum">DOI {doiOf(p)}</p>}
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))}
+  </div>
+)}
+
+<style>
+  .n { color: inherit; opacity: 0.6; font-variant-numeric: tabular-nums; margin-left: 0.15rem; }
+  .year { display: grid; gap: var(--s2) var(--s5); }
+  .year + .year { margin-top: var(--s6); }
+  @media (min-width: 40rem) { .year { grid-template-columns: 7.5rem minmax(0, 1fr); } }
+  .y { font-family: var(--display); font-weight: 400; font-size: 1.05rem; color: var(--muted); }
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s5); }
+  .title { font-weight: 550; line-height: 1.4; }
+  .title a { text-decoration: none; }
+  .title a:hover { text-decoration: underline; }
+  .authors { margin-top: 0.2rem; color: var(--muted); }
+  .authors strong { color: var(--ink); font-weight: 600; }
+  .venue { margin-top: 0.1rem; }
+  .doi { margin-top: 0.1rem; font-size: 0.78rem; color: var(--muted); user-select: all; overflow-wrap: anywhere; }
+  .status {
+    margin-left: var(--s2); padding: 0.05rem 0.5rem; border-radius: 999px; font-size: 0.8rem;
+    border: 1px solid var(--faint); font-style: normal;
+  }
+  .pub[hidden], .year[hidden] { display: none; }
+</style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter!;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      document.querySelectorAll<HTMLElement>('.pub').forEach((p) => {
+        p.hidden = !!f && !p.dataset.tags!.split('|').includes(f);
+      });
+      document.querySelectorAll<HTMLElement>('.year').forEach((y) => {
+        y.hidden = !y.querySelector('.pub:not([hidden])');
+      });
+    }),
+  );
+</script>

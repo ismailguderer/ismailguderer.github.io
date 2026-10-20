@@ -1,0 +1,77 @@
+---
+// Genome-browser style timeline: every entry gets a bar on a shared year axis.
+import { toYear } from '../lib/cv';
+
+interface Item {
+  start: string; end?: string | null;
+  title: string; org: string; orgUrl?: string | null; location?: string | null; when: string;
+  points?: string[]; notes?: { label: string; value: string }[];
+}
+interface Props { items: Item[]; axisFrom: number; axisTo: number; }
+const { items, axisFrom, axisTo } = Astro.props;
+
+const span = axisTo - axisFrom;
+const pct = (y: number) => ((y - axisFrom) / span) * 100;
+const step = span > 16 ? 4 : span > 6 ? 2 : 1;
+const ticks: number[] = [];
+for (let y = Math.ceil(axisFrom); y <= Math.floor(axisTo); y += 1) if (y % step === 0) ticks.push(y);
+---
+<div class="tracks">
+  <div class="axis" aria-hidden="true">
+    {ticks.map((t) => <span class="tick tnum" style={`left:${pct(t)}%`}>{t}</span>)}
+  </div>
+  <ol class="rows">
+    {items.map((it) => {
+      const a = pct(toYear(it.start));
+      const b = pct(toYear(it.end, true));
+      return (
+        <li class="entry">
+          <div class="bar-row" aria-hidden="true">
+            {ticks.map((t) => <span class="grid" style={`left:${pct(t)}%`}></span>)}
+            <span class={`bar ${it.end ? '' : 'live'}`} style={`left:${a}%;width:${Math.max(b - a, 0.8)}%`}></span>
+          </div>
+          <div class="head">
+            <h3>{it.title}</h3>
+            <p class="when muted small tnum">{it.when}</p>
+          </div>
+          <p class="org">
+            {it.orgUrl ? <a href={it.orgUrl}>{it.org}</a> : it.org}{it.location && <span class="muted">, {it.location}</span>}
+          </p>
+          {it.notes && it.notes.length > 0 && (
+            <dl class="notes">
+              {it.notes.map((n) => (<><dt class="muted">{n.label}</dt><dd>{n.value}</dd></>))}
+            </dl>
+          )}
+          {it.points && it.points.length > 0 && (
+            <ul class="points">{it.points.map((p) => <li>{p}</li>)}</ul>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</div>
+
+<style>
+  .tracks { --axis-h: 1.5rem; }
+  .axis { position: relative; height: var(--axis-h); border-bottom: 1px solid var(--line); margin-bottom: var(--s4); }
+  .tick { position: absolute; bottom: 0.3rem; transform: translateX(-50%); font-size: 0.75rem; color: var(--muted); }
+
+  .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s6); }
+  .bar-row { position: relative; height: 0.5rem; margin-bottom: var(--s3); }
+  .grid { position: absolute; top: -0.25rem; bottom: -0.25rem; width: 1px; background: var(--line); }
+  .bar { position: absolute; top: 0; height: 100%; background: color-mix(in srgb, var(--ink) 55%, transparent); border-radius: 1px; }
+  .bar.live { background: var(--accent); }
+  .bar.live::after {
+    content: ''; position: absolute; right: -0.35rem; top: 50%; width: 0.5rem; height: 0.5rem;
+    transform: translateY(-50%); border-radius: 50%; background: var(--accent);
+    box-shadow: 0 0 0 0.25rem var(--accent-soft);
+  }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 var(--s4); }
+  .org { margin-top: 0.1rem; }
+  .notes { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 0.15rem var(--s4); margin: var(--s3) 0 0; font-size: 0.95rem; }
+  .notes dd { margin: 0; }
+  .points { margin-top: var(--s3); display: grid; gap: var(--s1); }
+  .points li { position: relative; padding-left: 1.1rem; }
+  .points li::before { content: ''; position: absolute; left: 0; top: 0.78em; width: 0.5rem; height: 1px; background: var(--muted); }
+  @media print { .bar { background: #000; } .bar.live { background: var(--accent); } }
+</style>

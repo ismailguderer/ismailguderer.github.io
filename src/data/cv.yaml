@@ -1,0 +1,265 @@
+# Site content. Dates are "YYYY-MM" or "YYYY"; end: null means present.
+# Sections without entries are hidden.
+
+site:
+  title: İsmail Güderer
+  description: PhD candidate in bioinformatics at the Leibniz Institute on Aging (FLI), Jena. I study how the gut microbiome influences aging in the African turquoise killifish.
+
+person:
+  name: İsmail Güderer
+  # author-list spellings that are bolded
+  authorName: [Güderer İ]
+  role: PhD Candidate
+  affiliation: Dönertaş Group, Leibniz Institute on Aging (FLI)
+  affiliationUrl: https://www.leibniz-fli.de/
+  location: Jena, Germany
+  statement: I study how organisms age, reading it one long molecule at a time.
+  about:
+    - I am a PhD candidate in bioinformatics in the Dönertaş Group at the Leibniz Institute on Aging, Fritz Lipmann Institute (FLI), in Jena. In my thesis, I combine Nanopore long-read sequencing, single-cell transcriptomics, and metagenomics to ask how the gut microbiome influences aging in the African turquoise killifish (Nothobranchius furzeri).
+    - Before joining FLI, I spent seven years at Middle East Technical University (METU) in Ankara, where I studied aldo-keto reductases in colorectal cancer by in vitro and in silico methods. As a research assistant, I also coordinated two student laboratory courses; taught cell biology, genetics, epigenetics, and evolution; and ran the department's IT services, including its website.
+  email: null
+  # sidebar portrait from /public; null shows initials
+  photo: /photo.jpg
+  cvPdf: null                            # PDF in /public; null shows the print button
+  links:
+    - { label: Google Scholar, url: "https://scholar.google.com/citations?user=Qp5k8zYAAAAJ" }
+    - { label: ORCID, url: "https://orcid.org/0000-0002-5028-3569" }
+    - { label: ResearchGate, url: "https://www.researchgate.net/profile/Ismail-Guderer" }
+    - { label: GitHub, url: "https://github.com/ismailguderer" }
+    - { label: LinkedIn, url: "https://www.linkedin.com/in/ismailguderer/" }
+
+# front-page news, newest first
+news:
+  - date: "2026-06"
+    text: Our review on design and analysis strategies for robust microbiome ageing research was published in FEBS Letters.
+    url: https://doi.org/10.1002/1873-3468.70397
+  - date: "2026-05"
+    text: I gave a talk on alternative splicing in the aging gut at the FLI Retreat.
+  - date: "2026-01"
+    text: Our preprint on the integrative transcriptomic identification of cellular senescence is out on bioRxiv.
+    url: https://doi.org/10.64898/2026.01.02.697374
+  - date: "2025-06"
+    text: I presented a poster on single-cell alternative splicing dynamics during killifish aging at the 2025 Nothobranchius Symposium in Jena.
+  - date: "2024-02"
+    text: I started my PhD in the Dönertaş Group at FLI, Jena.
+
+# rendered as "Research Interests" above Skills
+interests: [Aging, Cancer, Computational Biology, Metagenomics, Transcriptomics]
+
+# groups keep this order; items are sorted alphabetically
+skills:
+  - group: Laboratory Techniques
+    items: [Bacterial Transformation, Cell Culture, Cell Cycle Assays, Cloning, Flow Cytometry, Gel Electrophoresis, Lentivirus Production and Transduction, Motility Assays, Nanopore Library Preparation, PCR and qRT-PCR, Proliferation Assays, Protein Isolation, RNA and DNA Isolation, SDS-PAGE and Western Blotting, Transfection]
+  - group: Programming
+    items: [Bash, C, CSS, Git, HPC Clusters (SGE), HTML, JavaScript, Linux, Python, R, R Markdown, React]
+  - group: Omics
+    items: [16S rRNA Amplicon Sequencing, Alternative Splicing, Differential Expression Analysis, Metagenome-Assembled Genomes, Metagenomics, Microbiome Analysis, Nanopore Long-Read Sequencing, RNA-seq Analysis, Single-Cell Transcriptomics]
+  - group: Tools
+    items: [CoverM, Cutadapt, FastQC, featureCounts, GSEA, HISAT2, Kallisto, minimap2, Salmon, Snippy, STAR, StringTie]
+  - group: Libraries
+    items: [ANCOM-BC, BioPython, clusterProfiler, DESeq2, dplyr, edgeR, limma, NumPy, pandas, phyloseq]
+  - group: Design
+    items: [Adobe Illustrator, Adobe Photoshop, Bootstrap, Drupal]
+
+experience:
+  - role: Doctoral Researcher
+    org: Dönertaş Group, Leibniz Institute on Aging (FLI)
+    url: https://www.leibniz-fli.de/
+    location: Jena, Germany
+    start: "2024-02"
+    end: null
+    points:
+      - Study how the gut microbiome influences aging in the African turquoise killifish with Nanopore long-read sequencing, single-cell transcriptomics, and metagenomics.
+      - Characterize age-related changes in the microbiome of the mosquito Aedes aegypti.
+  - role: Research Assistant
+    org: Middle East Technical University
+    url: https://www.metu.edu.tr/
+    location: Ankara, Turkey
+    start: "2019-04"
+    end: "2024-02"
+    points:
+      - Studied aldo-keto reductases in colorectal cancer by in vitro and in silico methods.
+      - Coordinated two student laboratory courses and taught cell biology, genetics, epigenetics, and evolution.
+      - Managed the department's IT services and developed its website (bio.metu.edu.tr).
+  - role: Part-Time Student Assistant
+    org: Middle East Technical University
+    url: https://www.metu.edu.tr/
+    location: Ankara, Turkey
+    start: "2017-10"
+    end: "2019-03"
+    points:
+      - Studied the toxicology of boric acid for my undergraduate project in Prof. Güray's laboratory.
+      - Began research on aldo-keto reductases in colorectal cancer cells in Prof. Banerjee's laboratory.
+      - Assisted in teaching student laboratories and managed IT services.
+  - role: Undergraduate Summer Intern
+    org: Laboratory of Genome Regulation, Boğaziçi University
+    url: https://www.boun.edu.tr/
+    location: Istanbul, Turkey
+    start: "2016-06"
+    end: "2016-08"
+    points:
+      - Ran experiments on melanoma cells and learned flow cytometry, FACS, and lentiviral transduction in Assoc. Prof. N.C. Tolga Emre's laboratory.
+      - Later applied these methods to establish a lentiviral transduction system in Prof. Banerjee's laboratory.
+
+education:
+  - degree: PhD in Bioinformatics
+    org: Leibniz Institute on Aging, Fritz Lipmann Institute (FLI)
+    location: Jena, Germany
+    start: "2024-02"
+    end: null
+    thesis: Influence of gut microbiome on killifish aging
+    supervisors: Dr. Handan Melike Dönertaş
+    cosupervisor: Prof. Dario Riccardo Valenzano
+  - degree: MSc in Biology
+    org: Middle East Technical University
+    location: Ankara, Turkey
+    start: "2017-09"
+    end: "2021-03"
+    thesis: Evaluation of functional changes in AKR1B1 and AKR1B10 overexpressing colorectal cancer cell lines
+    supervisors: Prof. Sreeparna Banerjee
+  - degree: BSc in Biology
+    org: Middle East Technical University
+    location: Ankara, Turkey
+    start: "2013-09"
+    end: "2017-08"
+    project: Effect of boric acid on drug metabolism genes of the HepG2 cell line
+    supervisors: Prof. Nülüfer Tülün Güray
+
+grants: []
+
+# rendered under "Awards and Grants"; year is optional
+awards:
+  - title: JSMC Consumables Fund
+    org: Jena School for Microbial Communication (JSMC)
+    orgUrl: https://www.jsmc-phd.de
+    year: "2026"
+  - title: Course Performance Award
+    org: Middle East Technical University
+    orgUrl: https://www.metu.edu.tr/
+    year: "2019"
+
+# tags become the filter buttons
+publications:
+  - title: Design and analysis strategies for robust microbiome ageing research
+    authors: [Olenik M, Güderer İ, Wang Y, Alvi T, Pandey P, Dönertaş HM]
+    venue: FEBS Letters
+    year: "2026"
+    url: https://doi.org/10.1002/1873-3468.70397
+    tags: [Aging, Microbiome, Review]
+  - title: Integrative transcriptomic identification of cellular senescence beyond marker limitations
+    authors: [Lu J, Güderer İ, Alvi T, Olenik M, Dönertaş HM]
+    venue: bioRxiv
+    year: "2026"
+    status: Preprint
+    url: https://doi.org/10.64898/2026.01.02.697374
+    tags: [Aging, Transcriptomics]
+  - title: Synthesis and photoluminescence properties of Ce³⁺/Tb³⁺ and Eu³⁺ ions doped GdB₃O₆/Ca₁₀(PO₄)₆(OH)₂ core/shell particles as well as its cytotoxicity against colon cancer cells
+    authors: [Uzun MB, Güderer İ, Banerjee S, Yilmaz A]
+    venue: Journal of Molecular Structure, 1321, 139921
+    year: "2024"
+    url: https://doi.org/10.1016/j.molstruc.2024.139921
+    tags: [Cancer Biology]
+  - title: Glutamine withdrawal leads to the preferential activation of lipid metabolism in metastatic colorectal cancer
+    authors: [Güleç Taşkıran AE, Karaoğlu DA, Eylem CC, Ermiş Ç, Güderer İ, Nemutlu E, Demirkol Canlı S, Banerjee S]
+    venue: Translational Oncology, 48, 102078
+    year: "2024"
+    url: https://doi.org/10.1016/j.tranon.2024.102078
+    tags: [Cancer Biology]
+  - title: Lysosomal alkalinization in nutrient restricted cancer cells activates cytoskeletal rearrangement to enhance partial epithelial to mesenchymal transition
+    authors: [Hüsnügil HH, Güleç Taşkıran AE, Güderer İ, Nehri LN, Oral G, Menemenli NŞ, Özcan Ö, Noghreh A, Akyol A, Banerjee S]
+    venue: Translational Oncology, 41, 101860
+    year: "2024"
+    url: https://doi.org/10.1016/j.tranon.2023.101860
+    tags: [Cancer Biology]
+  - title: Development of ACE2 loaded decoy liposomes and their effect on SARS-CoV-2 for COVID-19 treatment
+    authors: [Arisoy S, Kocas M, Comoglu T, Güderer İ, Banerjee S]
+    venue: Pharmaceutical Development and Technology, 27(3), 290-300
+    year: "2022"
+    url: https://doi.org/10.1080/10837450.2022.2042557
+    tags: [Drug Delivery]
+  - title: PRKAA1 (protein kinase AMP-activated catalytic subunit alpha 1)
+    authors: [Seza EG, Güderer İ, Ermis Ç, Banerjee S]
+    venue: Atlas of Genetics and Cytogenetics in Oncology and Haematology, 23(5), 105-111
+    year: "2019"
+    url: https://doi.org/10.4267/2042/70205
+    tags: [Cancer Biology, Review]
+
+# kind: talk | poster | teaching | communication | organizing
+outreach:
+  - title: Alternative splicing in the aging gut
+    kind: talk
+    date: "2026-05"
+    org: FLI Retreat 2026, Luisenthal, Germany
+    authors: [Güderer İ, Naumann U, Atienza P, Bens M, Conesa A, Dönertaş HM]
+  - title: Single-cell analysis of alternative splicing dynamics during killifish aging
+    kind: poster
+    date: "2025-06"
+    org: 2025 Nothobranchius Symposium, Jena, Germany
+    authors: [Güderer İ, Dönertaş HM]
+  - title: Exploring the age-related changes in mosquito (Ae. aegypti) microbiome
+    kind: poster
+    date: "2024-05"
+    org: FLI Retreat 2024, Luisenthal, Germany
+    authors: [Güderer İ, Altinli M, Dönertaş HM]
+  - title: Metabolic rewiring in AKR1B10 expressing colorectal cancer cells
+    kind: talk
+    date: "2022-03"
+    org: COST Action CA17118 Meeting, Turin, Italy
+    authors: [Güderer İ, Seza EG, Ermis Ç, Banerjee S]
+  - title: Differential response of SW620 and SW480 colon cancer cells to a combination of L-glutamine starvation and metformin treatment
+    kind: poster
+    date: "2020-10"
+    org: HIBIT 2020, Online
+    authors: [Ermis Ç, Güderer İ, Banerjee S]
+  - title: Student Laboratory Courses in Cell Biology, Genetics, Epigenetics, and Evolution
+    kind: teaching
+    date: "2017-10"
+    end: "2024-02"
+    org: Middle East Technical University, Ankara, Turkey
+    text: Assisted in two undergraduate laboratory courses and later coordinated them.
+  - title: Evrim Ağacı (Tree of Evolution Movement)
+    kind: communication
+    date: "2013-09"
+    end: "2018-02"
+    org: Computer Graphic Designer
+    text: Designed graphics for a Turkish popular-science platform.
+    url: https://www.evrimagaci.org
+  - title: METU Biology and Genetics Student Club
+    kind: organizing
+    date: "2013-09"
+    end: "2018-02"
+    org: Middle East Technical University, Ankara, Turkey
+    text: Organized scientific conferences and seminars on evolutionary and molecular biology; served on the administrative board (2014-2016) and the supervisory board (2017-2018).
+
+courses:
+  - title: Workshop on Documenting Animal Experiments
+    provider: Leibniz Institute on Aging, Fritz Lipmann Institute (FLI)
+    year: "2025-11"
+  - title: Advanced Use of the Bash Command Line
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2025-04"
+  - title: "Software Development: More than Programming"
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2025-03"
+  - title: Working with Tabular Data in Python and pandas
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2025-01"
+  - title: Introduction to Container Virtualization with Docker
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2025-01"
+  - title: Practical Introduction to Using an HPC Cluster
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2024-12"
+  - title: Introduction to the Command Line
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2024-12"
+  - title: Introduction to the Database Query Language SQL
+    provider: Competence Center for Digital Research (zedif), University of Jena
+    year: "2024-11"
+
+other:
+  - group: Languages
+    items: [Turkish (Native), English (Fluent), German (Intermediate)]
+  - group: Interests
+    sorted: true                        # sort items alphabetically
+    items: [Biking, Fitness, Hiking and Trekking, Photography, Running]

@@ -1,0 +1,238 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Tracks from '../components/Tracks.astro';
+import Publications from '../components/Publications.astro';
+import { cv, fmt, range, toYear, has } from '../lib/cv';
+
+const { site, person, interests, skills, experience, education, grants, awards, outreach, courses, other } = cv;
+
+// structured data so search engines can connect the site with the profiles it links to
+const siteUrl = new URL('/', Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: person.name,
+  url: siteUrl,
+  jobTitle: person.role,
+  description: site.description,
+  ...(person.photo ? { image: new URL(person.photo.replace(/^\//, ''), siteUrl).href } : {}),
+  affiliation: {
+    '@type': 'ResearchOrganization',
+    name: 'Leibniz Institute on Aging, Fritz Lipmann Institute (FLI)',
+    ...(person.affiliationUrl ? { url: person.affiliationUrl } : {}),
+  },
+  alumniOf: [...new Set(education.filter((e) => e.end).map((e) => e.org))].map((name) => ({ '@type': 'CollegeOrUniversity', name })),
+  workLocation: { '@type': 'Place', name: person.location },
+  sameAs: person.links.map((l) => l.url),
+  knowsAbout: interests,
+};
+
+// one shared year axis for Experience and Education
+const timed = [...experience, ...education];
+const axisFrom = timed.length ? Math.floor(Math.min(...timed.map((t) => toYear(t.start)))) : 2020;
+const axisTo = Math.ceil(Math.max(...timed.map((t) => toYear(t.end, true)), toYear(null)));
+
+const expItems = experience.map((e) => ({
+  start: e.start, end: e.end, title: e.role, org: e.org, orgUrl: e.url,
+  location: e.location, when: range(e.start, e.end), points: e.points,
+}));
+const eduItems = education.map((e) => ({
+  start: e.start, end: e.end, title: e.degree, org: e.org, location: e.location,
+  when: range(e.start, e.end),
+  notes: [
+    e.thesis && { label: 'Thesis', value: e.thesis },
+    e.project && { label: 'Project', value: e.project },
+    e.supervisors && { label: 'Supervisor', value: e.supervisors },
+    e.cosupervisor && { label: 'Co-Supervisor', value: e.cosupervisor },
+    e.grade && { label: 'Grade', value: e.grade },
+  ].filter(Boolean) as { label: string; value: string }[],
+}));
+
+const kindLabel = { talk: 'Talk', poster: 'Poster', teaching: 'Teaching', communication: 'Science Communication', organizing: 'Organizing' } as const;
+const byDate = <T extends { date?: string; year?: string; start?: string }>(arr: T[]) =>
+  [...arr].sort((a, b) => (b.date ?? b.year ?? b.start ?? '').localeCompare(a.date ?? a.year ?? a.start ?? ''));
+---
+<Base title={site.title} description={site.description} jsonLd={jsonLd}>
+  <div class="shell">
+    <Nav />
+    <main id="main">
+      <Hero />
+
+      {has('about') && (
+      <section class="section" id="about" aria-labelledby="about-h">
+        <h2 id="about-h">About</h2>
+        <div class="prose">{person.about.map((p) => <p>{p}</p>)}</div>
+      </section>
+      )}
+
+      {has('interests') && (
+      <section class="section" id="interests" aria-labelledby="interests-h">
+        <h2 id="interests-h">Research Interests</h2>
+        <ul class="interests">{interests.map((i) => <li>{i}</li>)}</ul>
+      </section>
+      )}
+
+      {has('skills') && (
+      <section class="section" id="skills" aria-labelledby="skills-h">
+        <h2 id="skills-h">Skills</h2>
+        <dl class="skills">
+          {skills.map((g) => (
+            <div>
+              <dt class="muted">{g.group}</dt>
+              <dd>{g.items.map((it) => <span>{it}</span>)}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      )}
+
+      {has('experience') && (
+      <section class="section" id="experience" aria-labelledby="exp-h">
+        <h2 id="exp-h">Experience</h2>
+        <Tracks items={expItems} axisFrom={axisFrom} axisTo={axisTo} />
+      </section>
+      )}
+
+      {has('education') && (
+      <section class="section" id="education" aria-labelledby="edu-h">
+        <h2 id="edu-h">Education</h2>
+        <Tracks items={eduItems} axisFrom={axisFrom} axisTo={axisTo} />
+      </section>
+      )}
+
+      {has('grants') && (
+      <section class="section" id="grants" aria-labelledby="grants-h">
+        <h2 id="grants-h">Grants</h2>
+        <ul class="dated">
+          {byDate(grants).map((g) => (
+            <li>
+              <span class="when">{range(g.start, g.end)}</span>
+              <div class="body">
+                <h3>{g.url ? <a href={g.url}>{g.title}</a> : g.title}</h3>
+                <p class="muted small">{[g.role, g.funder].filter(Boolean).join(', ')}</p>
+                {g.text && <p class="text">{g.text}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+      )}
+
+      {has('awards') && (
+      <section class="section" id="awards" aria-labelledby="awards-h">
+        <h2 id="awards-h">Awards and Grants</h2>
+        <ul class="dated">
+          {byDate(awards).map((a) => (
+            <li>
+              <span class="when">{a.year ? fmt(a.year) : ''}</span>
+              <div class="body">
+                <h3>{a.url ? <a href={a.url}>{a.title}</a> : a.title}</h3>
+                {a.org && <p class="muted small">{a.orgUrl ? <a href={a.orgUrl}>{a.org}</a> : a.org}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+      )}
+
+      {has('publications') && (
+      <section class="section" id="publications" aria-labelledby="pubs-h">
+        <h2 id="pubs-h">Publications</h2>
+        <Publications />
+      </section>
+      )}
+
+      {has('outreach') && (
+      <section class="section" id="outreach" aria-labelledby="out-h">
+        <h2 id="out-h">Outreach</h2>
+        <ul class="dated">
+          {byDate(outreach).map((o) => (
+            <li>
+              <span class="when">{o.end === undefined ? fmt(o.date) : range(o.date, o.end)}</span>
+              <div class="body">
+                <h3>{o.url ? <a href={o.url}>{o.title}</a> : o.title}</h3>
+                <p class="muted small">{[kindLabel[o.kind], o.org].filter(Boolean).join(', ')}</p>
+                {o.authors && (
+                  <p class="authors small">
+                    {o.authors.map((a, i) => (
+                      <>{person.authorName.includes(a) ? <strong>{a}</strong> : a}{i < o.authors!.length - 1 ? ', ' : ''}</>
+                    ))}
+                  </p>
+                )}
+                {o.text && <p class="text">{o.text}</p>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+      )}
+
+      {has('courses') && (
+      <section class="section" id="courses" aria-labelledby="courses-h">
+        <h2 id="courses-h">Courses</h2>
+        <ul class="dated">
+          {byDate(courses).map((c) => (
+            <li>
+              <span class="when">{fmt(c.year)}</span>
+              <div class="body">
+                <h3>{c.url ? <a href={c.url}>{c.title}</a> : c.title}</h3>
+                <p class="muted small">{c.provider}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+      )}
+
+      {has('other') && (
+      <section class="section" id="other" aria-labelledby="other-h">
+        <h2 id="other-h">Other</h2>
+        <dl class="skills">
+          {other.map((g) => (
+            <div>
+              <dt class="muted">{g.group}</dt>
+              <dd>{g.items.map((it) => <span>{it}</span>)}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      )}
+
+      <footer class="foot muted small">
+        <p>Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}. Built with Astro.</p>
+        <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a></p>
+      </footer>
+    </main>
+  </div>
+</Base>
+
+<style>
+  .interests { display: flex; flex-wrap: wrap; gap: var(--s2); }
+  .interests li {
+    padding: 0.3rem 0.85rem; border-radius: 999px; font-size: 0.95rem;
+    border: 1px solid var(--accent); color: var(--accent); background: var(--accent-soft);
+  }
+  .skills { margin: 0; display: grid; gap: var(--s5); }
+  .skills > div { display: grid; gap: var(--s2) var(--s5); }
+  @media (min-width: 40rem) { .skills > div { grid-template-columns: 7.5rem minmax(0, 1fr); } }
+  .skills dt { font-size: 0.9rem; padding-top: 0.15rem; }
+  .skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: var(--s2); }
+  .skills dd span {
+    padding: 0.2rem 0.65rem; border: 1px solid var(--line); border-radius: var(--r);
+    background: var(--surface); font-size: 0.925rem;
+  }
+  .authors { color: var(--muted); }
+  .authors strong { color: var(--ink); font-weight: 600; }
+  .foot {
+    max-width: var(--measure); margin-top: var(--s8); padding-top: var(--s4); border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s2) var(--s5);
+  }
+  @media print {
+    .skills dd span, .interests li { border: 0; padding: 0; background: none; color: inherit; }
+    .interests li:not(:last-child)::after { content: ','; }
+    .skills dd span:not(:last-child)::after { content: ','; }
+    .foot { display: none; }
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import { cv, fmt } from '../lib/cv';
+import { squigglePath } from '../lib/squiggle';
+import { iconFor } from '../lib/icons';
+const { person, news } = cv;
+const d = squigglePath(1200, 140, 11);
+---
+<header class="hero" id="top">
+  <div class="trace" aria-hidden="true">
+    <svg viewBox="0 0 1200 140" preserveAspectRatio="none">
+      <path class="trace-path" d={d} vector-effect="non-scaling-stroke" />
+    </svg>
+  </div>
+
+  <h1 class="name">{person.name}</h1>
+  <p class="role">
+    {person.role},{' '}
+    {person.affiliationUrl ? <a href={person.affiliationUrl}>{person.affiliation}</a> : person.affiliation},{' '}
+    {person.location}
+  </p>
+  <p class="statement">{person.statement}</p>
+
+  <ul class="links">
+    {person.email && <li><a href={`mailto:${person.email}`}>{person.email}</a></li>}
+    {person.links.map((l) => {
+      const ic = iconFor(l.url);
+      return (
+        <li>
+          <a href={l.url} rel="me noopener">
+            {ic && <svg class="ic" viewBox={ic.viewBox} aria-hidden="true" focusable="false"><path d={ic.d} /></svg>}
+            <span>{l.label}</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+
+  {news.length > 0 && (
+    <section class="news" aria-labelledby="news-h">
+      <h2 id="news-h">News</h2>
+      <ul>
+        {news.map((n) => (
+          <li>
+            <time class="tnum" datetime={n.date}>{fmt(n.date)}</time>
+            <span>{n.url ? <a href={n.url}>{n.text}</a> : n.text}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</header>
+
+<style>
+  .hero { position: relative; padding-top: var(--s7); max-width: 58rem; }
+  @media (min-width: 64rem) { .hero { padding-top: var(--s9); } }
+
+  .trace { height: clamp(70px, 11vw, 120px); margin: 0 calc(-1 * var(--s4)) var(--s6); }
+  @media (min-width: 64rem) { .trace { margin-left: calc(-1 * var(--s7)); margin-right: 0; } }
+  .trace svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .trace-path {
+    fill: none; stroke: var(--trace); stroke-width: 1.25; stroke-linejoin: round;
+  }
+  .trace svg { clip-path: inset(0 100% 0 0); animation: read 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.15s forwards; }
+  @keyframes read { to { clip-path: inset(0 0 0 0); } }
+  @media (prefers-reduced-motion: reduce) { .trace svg { animation: none; clip-path: none; } }
+
+  .name {
+    font-size: clamp(2.6rem, 8.5vw, 5.75rem);
+    font-weight: 300;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+  .role { margin-top: var(--s5); color: var(--muted); max-width: 40rem; }
+  .statement {
+    margin-top: var(--s5);
+    font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+    line-height: 1.35;
+    max-width: 32ch;
+  }
+
+  .links { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); margin-top: var(--s6); font-size: 0.95rem; }
+  .links a { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; }
+  .links a span { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+  .links a:hover span { text-decoration-color: currentColor; }
+  .ic { width: 1em; height: 1em; flex: none; fill: var(--muted); transition: fill 0.15s ease; }
+  .links a:hover .ic { fill: currentColor; }
+
+  .news { margin-top: var(--s8); max-width: var(--measure); }
+  .news h2 { font-size: 1.05rem; font-weight: 400; margin-bottom: var(--s4); }
+  .news ul { border-top: 1px solid var(--line); }
+  .news li {
+    display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s4);
+    padding: var(--s3) 0; border-bottom: 1px solid var(--line);
+    margin-right: 6%;   /* same inset as the sections: the top rule runs past the rows */
+  }
+  .news time { color: var(--muted); font-size: 0.9rem; padding-top: 0.12rem; }
+
+  @media print {
+    .trace, .news { display: none; }
+    .hero { padding-top: 0.15rem; }
+    .name { font-size: 2.2rem; line-height: 1.25; padding-top: 0.1em; }
+    .statement { font-size: 1.05rem; }
+    .links { margin-top: 0.6rem; }
+  }
+</style>

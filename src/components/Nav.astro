@@ -1,0 +1,176 @@
+---
+import { cv, sections, initials, asset } from '../lib/cv';
+const { person } = cv;
+---
+<!-- mobile top bar -->
+<header class="topbar">
+  <a class="mark" href="#top">
+    <span class="avatar" aria-hidden="true">
+      {person.photo ? <img src={asset(person.photo)} alt="" loading="lazy" /> : <span>{initials}</span>}
+    </span>
+    {person.name}
+  </a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="rail">Menu</button>
+</header>
+
+<aside class="rail" id="rail">
+  <div class="rail-inner">
+    <a class="portrait" href="#top" tabindex="-1" aria-hidden="true">
+      {person.photo
+        ? <img src={asset(person.photo)} alt="" width="400" height="400" />
+        : <span class="initials">{initials}</span>}
+    </a>
+    <a class="mark" href="#top">{person.name}</a>
+    <p class="rail-role muted small">{person.role}</p>
+
+    <nav aria-label="Sections">
+      <ul class="nav-list">
+        {sections.map((s) => (
+          <li><a href={`#${s.id}`} data-nav={s.id}>{s.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="rail-foot">
+      <button class="tool" type="button" data-theme-toggle>
+        <span class="tool-dot" aria-hidden="true"></span>
+        <span data-theme-label>Theme: Auto</span>
+      </button>
+      {person.cvPdf
+        ? <a class="tool" href={person.cvPdf}>Download CV (PDF)</a>
+        : <button class="tool" type="button" data-print>Print or Save as PDF</button>}
+    </div>
+  </div>
+</aside>
+
+<style>
+  .mark { font-family: var(--display); font-weight: 600; font-size: 1.05rem; text-decoration: none; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: var(--s3); }
+
+  /* small avatar in the mobile top bar */
+  .avatar {
+    width: 2rem; height: 2rem; border-radius: 6px; overflow: hidden; flex: none;
+    display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line);
+    font-size: 0.7rem; color: var(--muted);
+  }
+  .avatar img, .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .avatar img { object-position: 50% 20%; }
+
+  /* portrait at the top of the desktop sidebar: 4:5 card with soft corners */
+  .portrait {
+    display: none; width: 100%; max-width: 12rem; aspect-ratio: 1 / 1; border-radius: 14px; overflow: hidden;
+    background: var(--surface); border: 1px solid var(--line); text-decoration: none;
+    margin-bottom: var(--s5);
+  }
+  .initials {
+    width: 100%; height: 100%; display: grid; place-items: center;
+    font-family: var(--display); font-weight: 300; font-size: 2.4rem; color: var(--muted);
+  }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--s3) var(--s4);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .menu-btn {
+    font: inherit; font-size: 0.9rem; color: var(--ink); cursor: pointer;
+    background: none; border: 1px solid var(--line); border-radius: 999px; padding: 0.3rem 0.9rem;
+  }
+
+  .rail {
+    position: fixed; inset: 3.4rem 0 0 0; z-index: 25;
+    background: var(--bg);
+    padding: var(--s5) var(--s4);
+    overflow-y: auto;
+    transform: translateY(-0.5rem); opacity: 0; visibility: hidden;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+  }
+  .rail.open { transform: none; opacity: 1; visibility: visible; transition: opacity 0.18s ease, transform 0.18s ease; }
+  .rail > .rail-inner > .mark, .rail-role { display: none; }
+
+  .nav-list { display: grid; gap: 0; }
+  .nav-list a {
+    display: flex; align-items: center; gap: var(--s3);
+    padding: 0.5rem 0; font-size: 1.15rem; text-decoration: none; color: var(--muted);
+  }
+  .nav-list a::before {
+    content: ''; width: 0.9rem; height: 1px; background: var(--faint);
+    transition: width 0.2s ease, background 0.2s ease;
+  }
+  .nav-list a:hover { color: var(--ink); }
+  .nav-list a[aria-current='true'] { color: var(--ink); }
+  .nav-list a[aria-current='true']::before { width: 1.8rem; background: var(--accent); height: 2px; }
+
+  .rail-foot { display: grid; gap: var(--s2); margin-top: var(--s6); justify-items: start; }
+  .tool {
+    font: inherit; font-size: 0.875rem; color: var(--muted); cursor: pointer;
+    background: none; border: 0; padding: 0.2rem 0; text-decoration: none;
+    display: inline-flex; align-items: center; gap: var(--s2);
+  }
+  .tool:hover { color: var(--accent); }
+  .tool-dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; border: 1px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+
+  @media (min-width: 64rem) {
+    .topbar { display: none; }
+    .rail {
+      position: sticky; inset: auto; top: 0; height: 100vh; height: 100dvh;
+      transform: none; opacity: 1; visibility: visible; transition: none;
+      padding: var(--s6) var(--s5);
+      border-right: 1px solid var(--line);
+    }
+    .rail-inner { display: flex; flex-direction: column; height: 100%; }
+    .rail > .rail-inner > .mark, .rail-role { display: block; }
+    .portrait { display: block; }
+    .rail-role { margin-top: var(--s1); margin-bottom: var(--s6); }
+    .nav-list a { font-size: 0.95rem; padding: 0.32rem 0; }
+    .rail-foot { margin-top: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .rail, .rail.open, .nav-list a::before { transition: none; } }
+</style>
+
+<script>
+  // mobile menu
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const rail = document.getElementById('rail');
+  const setOpen = (open: boolean) => {
+    rail?.classList.toggle('open', open);
+    btn?.setAttribute('aria-expanded', String(open));
+    if (btn) btn.textContent = open ? 'Close' : 'Menu';
+  };
+  btn?.addEventListener('click', () => setOpen(!rail?.classList.contains('open')));
+  rail?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+
+  // theme: auto -> light -> dark -> auto
+  const root = document.documentElement;
+  const label = document.querySelector('[data-theme-label]');
+  const order = ['auto', 'light', 'dark'] as const;
+  const current = () => (root.dataset.theme as 'light' | 'dark' | undefined) ?? 'auto';
+  const names = { auto: 'Auto', light: 'Light', dark: 'Dark' } as const;
+  const render = () => { if (label) label.textContent = `Theme: ${names[current()]}`; };
+  render();
+  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
+    const next = order[(order.indexOf(current()) + 1) % order.length];
+    if (next === 'auto') delete root.dataset.theme; else root.dataset.theme = next;
+    try { next === 'auto' ? localStorage.removeItem('theme') : localStorage.setItem('theme', next); } catch {}
+    render();
+  });
+
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+
+  // scroll spy
+  const links = new Map<string, HTMLAnchorElement>();
+  document.querySelectorAll<HTMLAnchorElement>('[data-nav]').forEach((a) => links.set(a.dataset.nav!, a));
+  const visible = new Set<string>();
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => (e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id)));
+      const first = [...links.keys()].find((id) => visible.has(id));
+      links.forEach((a, id) => a.setAttribute('aria-current', String(id === first)));
+    },
+    { rootMargin: '-20% 0px -60% 0px' },
+  );
+  links.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+</script>

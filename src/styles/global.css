@@ -1,0 +1,153 @@
+@import '@fontsource-variable/inter/opsz.css';
+
+/* ---------- tokens ---------- */
+:root {
+  --bg: #eef1f5;          /* flow cell white */
+  --surface: #f8f9fb;
+  --ink: #121726;
+  --muted: #5a6275;
+  --faint: #c9cfdb;
+  --line: #dde2ea;
+  --accent: #2c6696;      /* sky blue from the portrait, deepened to pass WCAG AA on text */
+  --accent-soft: #2c66961f;
+  --on-accent: #ffffff;
+  --trace: #3276ae;       /* decorative trace keeps the brighter sky blue */
+
+  --display: 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --text: 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --s1: 0.25rem; --s2: 0.5rem; --s3: 0.75rem; --s4: 1rem;
+  --s5: 1.5rem; --s6: 2rem; --s7: 3rem; --s8: 4.5rem; --s9: 7rem;
+
+  --rail: 15rem;
+  --measure: 54rem;
+  --r: 4px;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #1d2229;          /* slate, from the navy of the portrait */
+  --surface: #262c35;
+  --ink: #e6e9ee;
+  --muted: #9aa3af;
+  --faint: #4a5361;
+  --line: #323944;
+  --accent: #79add8;      /* same sky blue, lifted for dark backgrounds */
+  --accent-soft: #79add826;
+  --on-accent: #1a1a19;
+  --trace: var(--accent);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #1d2229; --surface: #262c35; --ink: #e6e9ee; --muted: #9aa3af;
+    --faint: #4a5361; --line: #323944; --accent: #79add8; --accent-soft: #79add826;
+    --on-accent: #1a1a19; --trace: var(--accent);
+    color-scheme: dark;
+  }
+}
+
+/* ---------- base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--display); font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; margin: 0; }
+h3 { font-family: var(--text); font-weight: 600; font-size: 1.0625rem; line-height: 1.4; letter-spacing: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration-color: var(--faint); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent); text-decoration-color: currentColor; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: var(--s4); top: -3rem; background: var(--accent); color: var(--on-accent); padding: var(--s2) var(--s4); z-index: 50; border-radius: var(--r); }
+.skip:focus { top: var(--s4); }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.9rem; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* ---------- shell ---------- */
+.shell { display: block; }
+main { padding: 0 var(--s4) var(--s8); }
+
+@media (min-width: 64rem) {
+  .shell {
+    display: grid; grid-template-columns: var(--rail) minmax(0, 1fr);
+    max-width: 78rem; margin: 0 auto;   /* centered on wide screens */
+  }
+  main { padding: 0 var(--s7) var(--s9) var(--s7); }
+}
+
+/* scale everything up on large monitors so the column keeps its proportion */
+@media (min-width: 120rem) { html { font-size: 112.5%; } }  /* >= 1920px */
+@media (min-width: 160rem) { html { font-size: 125%; } }    /* >= 2560px */
+@media (min-width: 210rem) { html { font-size: 150%; } }    /* >= 3360px, 4K */
+
+/* ---------- sections ---------- */
+.section { max-width: var(--measure); padding-top: var(--s8); }
+.section > h2 {
+  font-size: clamp(1.35rem, 2.2vw, 1.6rem);
+  padding-bottom: var(--s4);
+  margin-bottom: var(--s5);
+  border-bottom: 1px solid var(--line);
+}
+/* content sits 6% in from the right, so each heading rule runs past it */
+.section > :not(h2) { padding-right: 6%; }
+
+.prose p + p { margin-top: var(--s4); }
+.prose p, .text { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+
+/* generic dated list: date column + body */
+.dated { display: grid; gap: var(--s5); }
+.dated > li { display: grid; gap: var(--s1) var(--s5); grid-template-columns: 1fr; }
+.dated .when { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+@media (min-width: 40rem) {
+  .dated > li { grid-template-columns: 7.5rem minmax(0, 1fr); }
+  .dated .when { padding-top: 0.12rem; }
+}
+.dated .body > * + * { margin-top: var(--s1); }
+
+/* chips (filters) */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+.chip {
+  font: inherit; font-size: 0.875rem; cursor: pointer;
+  padding: 0.3rem 0.8rem; border-radius: 999px;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+}
+.chip:hover { color: var(--ink); border-color: var(--faint); }
+.chip[aria-pressed='true'] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* ---------- print ---------- */
+/* PDF output is always light, whatever theme is active on screen */
+@media print {
+  :root, :root[data-theme], :root:not([data-theme='light']) {
+    --bg: #fff !important; --surface: #fff !important; --ink: #000 !important; --muted: #444 !important;
+    --line: #ccc !important; --faint: #bbb !important; --accent: #2c6696 !important; --accent-soft: #2c66961f !important;
+    color-scheme: light !important;
+  }
+  html, body { background: #fff !important; color: #000 !important; }
+  @page { margin: 16mm 14mm; }
+  body { font-size: 10.5pt; }
+  .shell { display: block; max-width: none; }
+  main { padding: 0; }
+  .no-print, .rail, .topbar { display: none !important; }
+  .section { padding-top: 1.4rem; max-width: none; }
+  .section > h2 { margin-bottom: 0.8rem; padding-bottom: 0.3rem; }
+  li, .entry { break-inside: avoid; }
+  a { text-decoration: none; }
+}
