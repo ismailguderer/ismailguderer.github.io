@@ -144,8 +144,9 @@ publications:
     authors: [Olenik M, Güderer İ, Wang Y, Alvi T, Pandey P, Dönertaş HM]
     venue: FEBS Letters
     year: "2026"
+    status: Review
     url: https://doi.org/10.1002/1873-3468.70397
-    tags: [Aging, Microbiome, Review]
+    tags: [Aging, Microbiome]
   - title: Integrative transcriptomic identification of cellular senescence beyond marker limitations
     authors: [Lu J, Güderer İ, Alvi T, Olenik M, Dönertaş HM]
     venue: bioRxiv
@@ -181,8 +182,9 @@ publications:
     authors: [Seza EG, Güderer İ, Ermis Ç, Banerjee S]
     venue: Atlas of Genetics and Cytogenetics in Oncology and Haematology, 23(5), 105-111
     year: "2019"
+    status: Review
     url: https://doi.org/10.4267/2042/70205
-    tags: [Cancer Biology, Review]
+    tags: [Cancer Biology]
 
 # kind: talk | poster | teaching | communication | organizing
 outreach:
