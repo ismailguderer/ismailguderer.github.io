@@ -1,0 +1,106 @@
+{
+  "word": "SELAM",
+  "dna": "AGTGAACTAGCTATG",
+  "left": "TTTACCT",
+  "right": "TT",
+  "minStep": 0.684,
+  "source": "nanoporetech/kmer_models dna_r10.4.1_e8.2_400bps/9mer_levels_v1.txt",
+  "events": [
+    {
+      "base": "T",
+      "kmer": "TTTACCTAG",
+      "level": 1.135,
+      "label": false
+    },
+    {
+      "base": "A",
+      "kmer": "TTACCTAGT",
+      "level": 0.109,
+      "label": true
+    },
+    {
+      "base": "G",
+      "kmer": "TACCTAGTG",
+      "level": -1.097,
+      "label": true
+    },
+    {
+      "base": "T",
+      "kmer": "ACCTAGTGA",
+      "level": 1.477,
+      "label": true
+    },
+    {
+      "base": "G",
+      "kmer": "CCTAGTGAA",
+      "level": 0.306,
+      "label": true
+    },
+    {
+      "base": "A",
+      "kmer": "CTAGTGAAC",
+      "level": -1.611,
+      "label": true
+    },
+    {
+      "base": "A",
+      "kmer": "TAGTGAACT",
+      "level": -0.926,
+      "label": true
+    },
+    {
+      "base": "C",
+      "kmer": "AGTGAACTA",
+      "level": 0.595,
+      "label": true
+    },
+    {
+      "base": "T",
+      "kmer": "GTGAACTAG",
+      "level": 1.361,
+      "label": true
+    },
+    {
+      "base": "A",
+      "kmer": "TGAACTAGC",
+      "level": 0.178,
+      "label": true
+    },
+    {
+      "base": "G",
+      "kmer": "GAACTAGCT",
+      "level": -1.005,
+      "label": true
+    },
+    {
+      "base": "C",
+      "kmer": "AACTAGCTA",
+      "level": -0.003,
+      "label": true
+    },
+    {
+      "base": "T",
+      "kmer": "ACTAGCTAT",
+      "level": 1.071,
+      "label": true
+    },
+    {
+      "base": "A",
+      "kmer": "CTAGCTATG",
+      "level": 0.344,
+      "label": true
+    },
+    {
+      "base": "T",
+      "kmer": "TAGCTATGT",
+      "level": 2.01,
+      "label": true
+    },
+    {
+      "base": "G",
+      "kmer": "AGCTATGTT",
+      "level": 1.104,
+      "label": true
+    }
+  ]
+}

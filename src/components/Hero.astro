@@ -1,15 +1,27 @@
 ---
 import { cv, fmt } from '../lib/cv';
-import { squigglePath } from '../lib/squiggle';
+import { squiggle } from '../lib/squiggle';
 import { iconFor } from '../lib/icons';
 const { person, news } = cv;
-const d = squigglePath(1200, 140, 11);
+const W = 1200;
+const { d, events } = squiggle(W, 140, 11);
+const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
 ---
 <header class="hero" id="top">
   <div class="trace" aria-hidden="true">
-    <svg viewBox="0 0 1200 140" preserveAspectRatio="none">
-      <path class="trace-path" d={d} vector-effect="non-scaling-stroke" />
-    </svg>
+    <div class="trace-read">
+      <svg viewBox={`0 0 ${W} 140`} preserveAspectRatio="none">
+        <path class="trace-path" d={d} vector-effect="non-scaling-stroke" />
+      </svg>
+      {events.map((e) => (
+        <i class="trace-cut" style={`left:${pct(e.x0)};--y0:${(e.y0 / 140).toFixed(4)}`}></i>
+      ))}
+      <div class="trace-bases">
+        {events.map((e) => (
+          <span style={`left:${pct(e.x0)};width:${pct(e.x1 - e.x0)}`}>{e.base}</span>
+        ))}
+      </div>
+    </div>
   </div>
 
   <h1 class="name">{person.name}</h1>
@@ -54,15 +66,30 @@ const d = squigglePath(1200, 140, 11);
   .hero { position: relative; padding-top: var(--s7); max-width: 58rem; }
   @media (min-width: 64rem) { .hero { padding-top: var(--s9); } }
 
-  .trace { height: clamp(70px, 11vw, 120px); margin: 0 calc(-1 * var(--s4)) var(--s6); }
+  .trace { margin: 0 calc(-1 * var(--s4)) var(--s6); }
   @media (min-width: 64rem) { .trace { margin-left: calc(-1 * var(--s7)); margin-right: 0; } }
-  .trace svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .trace-read { position: relative; --trace-h: clamp(70px, 11vw, 120px); }
+  .trace svg { width: 100%; height: var(--trace-h); display: block; overflow: visible; position: relative; z-index: 1; }
   .trace-path {
     fill: none; stroke: var(--trace); stroke-width: 1.25; stroke-linejoin: round;
   }
-  .trace svg { clip-path: inset(0 100% 0 0); animation: read 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.15s forwards; }
+  /* one element per boundary: starts on the signal, runs to the bottom, same dash rhythm all the way */
+  .trace-cut {
+    position: absolute; bottom: 0; width: 1px; margin-left: -0.5px;
+    top: calc(var(--trace-h) * var(--y0));
+    background: repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--muted) 60%, transparent) 0 3px, transparent 3px 6px);
+  }
+  .trace-bases { position: relative; height: 1.5rem; }
+  .trace-bases span {
+    position: absolute; top: 0; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8125rem; letter-spacing: 0.08em; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .trace-read { clip-path: inset(0 100% 0 0); animation: read 2.6s cubic-bezier(0.45, 0, 0.2, 1) 0.15s forwards; }
   @keyframes read { to { clip-path: inset(0 0 0 0); } }
-  @media (prefers-reduced-motion: reduce) { .trace svg { animation: none; clip-path: none; } }
+  @media (prefers-reduced-motion: reduce) { .trace-read { animation: none; clip-path: none; } }
 
   .name {
     font-size: clamp(2.6rem, 8.5vw, 5.75rem);
