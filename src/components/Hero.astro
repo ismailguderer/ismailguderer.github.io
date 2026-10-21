@@ -74,11 +74,13 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
     fill: none; stroke: var(--trace); stroke-width: 1.25; stroke-linejoin: round;
   }
   /* one element per boundary: starts on the signal, runs to the bottom, same dash rhythm all the way */
+  /* dash pattern is anchored at the fixed bottom edge, so every line ends identically */
   .trace-cut {
     position: absolute; bottom: 0; width: 1px; margin-left: -0.5px;
     top: calc(var(--trace-h) * var(--y0));
-    background: repeating-linear-gradient(to bottom,
-      color-mix(in srgb, var(--muted) 60%, transparent) 0 3px, transparent 3px 6px);
+    background: linear-gradient(to top,
+      color-mix(in srgb, var(--muted) 60%, transparent) 0 3px, transparent 3px 5px)
+      left bottom / 1px 5px repeat-y;
   }
   .trace-bases { position: relative; height: 1.5rem; }
   .trace-bases span {
