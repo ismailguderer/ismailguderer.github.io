@@ -258,6 +258,9 @@ courses:
   - title: Introduction to the Database Query Language SQL
     provider: Competence Center for Digital Research (zedif), University of Jena
     year: "2024-11"
+  - title: "Laboratory Animal Science Course: Fish (FELASA B)"
+    provider: Leibniz Institute on Aging, Fritz Lipmann Institute (FLI)
+    year: "2024-04"
 
 other:
   - group: Languages
