@@ -28,6 +28,17 @@ person:
     - { label: GitHub, url: "https://github.com/ismailguderer" }
     - { label: LinkedIn, url: "https://www.linkedin.com/in/ismailguderer/" }
 
+# institutions are linked wherever their name appears (hero, experience, education, awards, outreach, courses)
+institutions:
+  Dönertaş Group: https://donertas-group.github.io/
+  Leibniz Institute on Aging, Fritz Lipmann Institute (FLI): https://www.leibniz-fli.de/
+  Leibniz Institute on Aging (FLI): https://www.leibniz-fli.de/
+  Middle East Technical University: https://www.metu.edu.tr/
+  Boğaziçi University: https://www.boun.edu.tr/
+  Jena School for Microbial Communication (JSMC): https://www.jsmc-phd.de
+  Competence Center for Digital Research (zedif): https://www.zedif.uni-jena.de/en
+  University of Jena: https://www.uni-jena.de/en
+
 # front-page news, newest first
 news:
   - date: "2026-06"
@@ -64,7 +75,6 @@ skills:
 experience:
   - role: Doctoral Researcher
     org: Dönertaş Group, Leibniz Institute on Aging (FLI)
-    url: https://www.leibniz-fli.de/
     location: Jena, Germany
     start: "2024-02"
     end: null
@@ -73,7 +83,6 @@ experience:
       - Characterize age-related changes in the microbiome of the mosquito Aedes aegypti.
   - role: Research Assistant
     org: Middle East Technical University
-    url: https://www.metu.edu.tr/
     location: Ankara, Turkey
     start: "2019-04"
     end: "2024-02"
@@ -83,7 +92,6 @@ experience:
       - Managed the department's IT services and developed its website (bio.metu.edu.tr).
   - role: Part-Time Student Assistant
     org: Middle East Technical University
-    url: https://www.metu.edu.tr/
     location: Ankara, Turkey
     start: "2017-10"
     end: "2019-03"
@@ -93,7 +101,6 @@ experience:
       - Assisted in teaching student laboratories and managed IT services.
   - role: Undergraduate Summer Intern
     org: Laboratory of Genome Regulation, Boğaziçi University
-    url: https://www.boun.edu.tr/
     location: Istanbul, Turkey
     start: "2016-06"
     end: "2016-08"
@@ -131,11 +138,9 @@ grants: []
 awards:
   - title: JSMC Consumables Fund
     org: Jena School for Microbial Communication (JSMC)
-    orgUrl: https://www.jsmc-phd.de
     year: "2026"
   - title: Course Performance Award
     org: Middle East Technical University
-    orgUrl: https://www.metu.edu.tr/
     year: "2019"
 
 # tags become the filter buttons

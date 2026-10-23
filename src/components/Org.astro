@@ -1,0 +1,7 @@
+---
+// Text with every known institution linked (see `institutions` in cv.yaml).
+import { orgParts } from '../lib/cv';
+interface Props { text: string }
+const parts = orgParts(Astro.props.text);
+---
+{parts.map((p) => (p.url ? <a href={p.url} target="_blank" rel="noopener">{p.t}</a> : p.t))}

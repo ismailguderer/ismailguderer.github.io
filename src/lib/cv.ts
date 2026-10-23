@@ -23,6 +23,7 @@ const Schema = z.object({
     cvPdf: url,
     links: z.array(z.object({ label: str, url: z.string() })).default([]),
   }),
+  institutions: z.record(z.string(), z.string()).default({}),
   news: z.array(z.object({ date, text: str, url })).default([]),
   interests: z.array(str).default([]),
   skills: z.array(z.object({ group: str, items: z.array(str) })).default([]),
@@ -93,6 +94,28 @@ export function fmt(d: string | null | undefined, present = 'present'): string {
 
 export function range(start: string, end?: string | null): string {
   return `${fmt(start)} to ${fmt(end)}`;
+}
+
+/**
+ * Split a text into plain and linked parts, linking every institution
+ * listed under `institutions` in cv.yaml (longest name wins).
+ */
+export function orgParts(text: string): { t: string; url?: string }[] {
+  const names = Object.keys(cv.institutions).sort((a, b) => b.length - a.length);
+  const parts: { t: string; url?: string }[] = [];
+  let rest = text;
+  while (rest) {
+    let hit: { i: number; name: string } | null = null;
+    for (const name of names) {
+      const i = rest.indexOf(name);
+      if (i >= 0 && (!hit || i < hit.i)) hit = { i, name };
+    }
+    if (!hit) { parts.push({ t: rest }); break; }
+    if (hit.i > 0) parts.push({ t: rest.slice(0, hit.i) });
+    parts.push({ t: hit.name, url: cv.institutions[hit.name] });
+    rest = rest.slice(hit.i + hit.name.length);
+  }
+  return parts;
 }
 
 /** Decimal year, e.g. "2024-07" -> 2024.5. Missing end = now. */

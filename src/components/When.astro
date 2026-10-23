@@ -1,0 +1,9 @@
+---
+// Date or date range for the left date column; a range stacks as "start / to / end" on wider screens.
+import { fmt } from '../lib/cv';
+interface Props { start: string; end?: string | null; range?: boolean }
+const { start, end, range = false } = Astro.props;
+---
+<span class="when">{range
+  ? <><span class="r">{fmt(start)}</span> <span class="r">to</span> <span class="r">{fmt(end)}</span></>
+  : fmt(start)}</span>

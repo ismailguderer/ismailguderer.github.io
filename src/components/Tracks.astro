@@ -1,10 +1,11 @@
 ---
 // Genome-browser style timeline: every entry gets a bar on a shared year axis.
 import { toYear } from '../lib/cv';
+import Org from './Org.astro';
 
 interface Item {
   start: string; end?: string | null;
-  title: string; org: string; orgUrl?: string | null; location?: string | null; when: string;
+  title: string; org: string; location?: string | null; when: string;
   points?: string[]; notes?: { label: string; value: string }[];
 }
 interface Props { items: Item[]; axisFrom: number; axisTo: number; }
@@ -35,7 +36,7 @@ for (let y = Math.ceil(axisFrom); y <= Math.floor(axisTo); y += 1) if (y % step 
             <p class="when muted small tnum">{it.when}</p>
           </div>
           <p class="org">
-            {it.orgUrl ? <a href={it.orgUrl}>{it.org}</a> : it.org}{it.location && <span class="muted">, {it.location}</span>}
+            <Org text={it.org} />{it.location && <span class="muted">, {it.location}</span>}
           </p>
           {it.notes && it.notes.length > 0 && (
             <dl class="notes">

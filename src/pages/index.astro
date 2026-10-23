@@ -4,7 +4,9 @@ import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import Tracks from '../components/Tracks.astro';
 import Publications from '../components/Publications.astro';
-import { cv, fmt, range, toYear, has } from '../lib/cv';
+import Org from '../components/Org.astro';
+import When from '../components/When.astro';
+import { cv, range, toYear, has } from '../lib/cv';
 
 const { site, person, interests, skills, experience, education, grants, awards, outreach, courses, other } = cv;
 
@@ -35,7 +37,7 @@ const axisFrom = timed.length ? Math.floor(Math.min(...timed.map((t) => toYear(t
 const axisTo = Math.ceil(Math.max(...timed.map((t) => toYear(t.end, true)), toYear(null)));
 
 const expItems = experience.map((e) => ({
-  start: e.start, end: e.end, title: e.role, org: e.org, orgUrl: e.url,
+  start: e.start, end: e.end, title: e.role, org: e.org,
   location: e.location, when: range(e.start, e.end), points: e.points,
 }));
 const eduItems = education.map((e) => ({
@@ -70,7 +72,7 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
       {has('interests') && (
       <section class="section" id="interests" aria-labelledby="interests-h">
         <h2 id="interests-h">Research Interests</h2>
-        <ul class="interests">{interests.map((i) => <li>{i}</li>)}</ul>
+        <ul class="interests">{interests.map((i) => <li class="tag">{i}</li>)}</ul>
       </section>
       )}
 
@@ -81,7 +83,7 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
           {skills.map((g) => (
             <div>
               <dt class="muted">{g.group}</dt>
-              <dd>{g.items.map((it) => <span>{it}</span>)}</dd>
+              <dd>{g.items.map((it) => <span class="tag">{it}</span>)}</dd>
             </div>
           ))}
         </dl>
@@ -108,10 +110,10 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
         <ul class="dated">
           {byDate(grants).map((g) => (
             <li>
-              <span class="when">{range(g.start, g.end)}</span>
+              <When start={g.start} end={g.end} range />
               <div class="body">
-                <h3>{g.url ? <a href={g.url}>{g.title}</a> : g.title}</h3>
-                <p class="muted small">{[g.role, g.funder].filter(Boolean).join(', ')}</p>
+                <h3>{g.url ? <a href={g.url} target="_blank" rel="noopener">{g.title}</a> : g.title}</h3>
+                <p class="muted small"><Org text={[g.role, g.funder].filter(Boolean).join(', ')} /></p>
                 {g.text && <p class="text">{g.text}</p>}
               </div>
             </li>
@@ -126,10 +128,10 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
         <ul class="dated">
           {byDate(awards).map((a) => (
             <li>
-              <span class="when">{a.year ? fmt(a.year) : ''}</span>
+              {a.year ? <When start={a.year} /> : <span class="when"></span>}
               <div class="body">
-                <h3>{a.url ? <a href={a.url}>{a.title}</a> : a.title}</h3>
-                {a.org && <p class="muted small">{a.orgUrl ? <a href={a.orgUrl}>{a.org}</a> : a.org}</p>}
+                <h3>{a.url ? <a href={a.url} target="_blank" rel="noopener">{a.title}</a> : a.title}</h3>
+                {a.org && <p class="muted small"><Org text={a.org} /></p>}
               </div>
             </li>
           ))}
@@ -150,10 +152,10 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
         <ul class="dated">
           {byDate(outreach).map((o) => (
             <li>
-              <span class="when">{o.end === undefined ? fmt(o.date) : range(o.date, o.end)}</span>
+              <When start={o.date} end={o.end} range={o.end !== undefined} />
               <div class="body">
-                <h3>{o.url ? <a href={o.url}>{o.title}</a> : o.title}</h3>
-                <p class="muted small">{[kindLabel[o.kind], o.org].filter(Boolean).join(', ')}</p>
+                <h3>{o.url ? <a href={o.url} target="_blank" rel="noopener">{o.title}</a> : o.title}</h3>
+                <p class="muted small"><Org text={[kindLabel[o.kind], o.org].filter(Boolean).join(', ')} /></p>
                 {o.authors && (
                   <p class="authors small">
                     {o.authors.map((a, i) => (
@@ -175,10 +177,10 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
         <ul class="dated">
           {byDate(courses).map((c) => (
             <li>
-              <span class="when">{fmt(c.year)}</span>
+              <When start={c.year} />
               <div class="body">
-                <h3>{c.url ? <a href={c.url}>{c.title}</a> : c.title}</h3>
-                <p class="muted small">{c.provider}</p>
+                <h3>{c.url ? <a href={c.url} target="_blank" rel="noopener">{c.title}</a> : c.title}</h3>
+                <p class="muted small"><Org text={c.provider} /></p>
               </div>
             </li>
           ))}
@@ -193,7 +195,7 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
           {other.map((g) => (
             <div>
               <dt class="muted">{g.group}</dt>
-              <dd>{g.items.map((it) => <span>{it}</span>)}</dd>
+              <dd>{g.items.map((it) => <span class="tag">{it}</span>)}</dd>
             </div>
           ))}
         </dl>
@@ -202,7 +204,7 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
 
       <footer class="foot muted small">
         <p>Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}. Built with Astro.</p>
-        <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" rel="license">CC BY 4.0</a></p>
+        <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
       </footer>
     </main>
   </div>
@@ -210,19 +212,11 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
 
 <style>
   .interests { display: flex; flex-wrap: wrap; gap: var(--s2); }
-  .interests li {
-    padding: 0.3rem 0.85rem; border-radius: 999px; font-size: 0.95rem;
-    border: 1px solid var(--accent); color: var(--accent); background: var(--accent-soft);
-  }
   .skills { margin: 0; display: grid; gap: var(--s5); }
   .skills > div { display: grid; gap: var(--s2) var(--s5); }
   @media (min-width: 40rem) { .skills > div { grid-template-columns: 7.5rem minmax(0, 1fr); } }
   .skills dt { font-size: 0.9rem; padding-top: 0.15rem; }
   .skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: var(--s2); }
-  .skills dd span {
-    padding: 0.2rem 0.65rem; border: 1px solid var(--line); border-radius: var(--r);
-    background: var(--surface); font-size: 0.925rem;
-  }
   .authors { color: var(--muted); }
   .authors strong { color: var(--ink); font-weight: 600; }
   .foot {
@@ -230,7 +224,6 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s2) var(--s5);
   }
   @media print {
-    .skills dd span, .interests li { border: 0; padding: 0; background: none; color: inherit; }
     .interests li:not(:last-child)::after { content: ','; }
     .skills dd span:not(:last-child)::after { content: ','; }
     .foot { display: none; }

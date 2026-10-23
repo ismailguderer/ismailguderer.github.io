@@ -2,6 +2,7 @@
 import { cv, fmt } from '../lib/cv';
 import { squiggle } from '../lib/squiggle';
 import { iconFor } from '../lib/icons';
+import Org from './Org.astro';
 const { person, news } = cv;
 const W = 1200;
 const { d, events } = squiggle(W, 140, 11);
@@ -25,11 +26,7 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
   </div>
 
   <h1 class="name">{person.name}</h1>
-  <p class="role">
-    {person.role},{' '}
-    {person.affiliationUrl ? <a href={person.affiliationUrl}>{person.affiliation}</a> : person.affiliation},{' '}
-    {person.location}
-  </p>
+  <p class="role">{person.role}, <Org text={person.affiliation} />, {person.location}</p>
   <p class="statement">{person.statement}</p>
 
   <ul class="links">
@@ -38,7 +35,7 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
       const ic = iconFor(l.url);
       return (
         <li>
-          <a href={l.url} rel="me noopener">
+          <a href={l.url} target="_blank" rel="me noopener">
             {ic && <svg class="ic" viewBox={ic.viewBox} aria-hidden="true" focusable="false"><path d={ic.d} /></svg>}
             <span>{l.label}</span>
           </a>
@@ -54,7 +51,7 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
         {news.map((n) => (
           <li>
             <time class="tnum" datetime={n.date}>{fmt(n.date)}</time>
-            <span>{n.url ? <a href={n.url}>{n.text}</a> : n.text}</span>
+            <span>{n.url ? <a href={n.url} target="_blank" rel="noopener">{n.text}</a> : n.text}</span>
           </li>
         ))}
       </ul>
@@ -109,13 +106,12 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
 
   .links { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); margin-top: var(--s6); font-size: 0.95rem; }
   .links a { display: inline-flex; align-items: center; gap: 0.4rem; text-decoration: none; }
-  .links a span { text-decoration: underline; text-decoration-color: var(--faint); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
-  .links a:hover span { text-decoration-color: currentColor; }
+  .links a:hover span { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
   .ic { width: 1em; height: 1em; flex: none; fill: var(--muted); transition: fill 0.15s ease; }
   .links a:hover .ic { fill: currentColor; }
 
   .news { margin-top: var(--s8); max-width: var(--measure); }
-  .news h2 { font-size: 1.05rem; font-weight: 400; margin-bottom: var(--s4); }
+  .news h2 { font-size: clamp(1.35rem, 2.2vw, 1.6rem); padding-bottom: var(--s4); }   /* same as section headings; the list's top rule is its underline */
   .news ul { border-top: 1px solid var(--line); }
   .news li {
     display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--s4);
