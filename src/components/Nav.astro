@@ -1,12 +1,16 @@
 ---
-import { cv, sections, initials, asset } from '../lib/cv';
+import { Picture } from 'astro:assets';
+import { cv, sections, initials } from '../lib/cv';
+import { photo } from '../lib/photo';
 const { person } = cv;
 ---
 <!-- mobile top bar -->
 <header class="topbar">
   <a class="mark" href="#top">
     <span class="avatar" aria-hidden="true">
-      {person.photo ? <img src={asset(person.photo)} alt="" loading="lazy" /> : <span>{initials}</span>}
+      {photo
+        ? <Picture src={photo} formats={['avif', 'webp']} widths={[64, 96]} sizes="2rem" alt="" loading="lazy" />
+        : <span>{initials}</span>}
     </span>
     {person.name}
   </a>
@@ -16,8 +20,8 @@ const { person } = cv;
 <aside class="rail" id="rail">
   <div class="rail-inner">
     <a class="portrait" href="#top" tabindex="-1">
-      {person.photo
-        ? <img src={asset(person.photo)} alt={`Portrait of ${person.name}`} width="400" height="400" />
+      {photo
+        ? <Picture src={photo} formats={['avif', 'webp']} widths={[240, 400, 600]} sizes="12rem" alt={`Portrait of ${person.name}`} loading="eager" />
         : <span class="initials">{initials}</span>}
     </a>
     <a class="mark" href="#top">{person.name}</a>

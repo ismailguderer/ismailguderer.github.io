@@ -7,6 +7,7 @@ import Publications from '../components/Publications.astro';
 import Org from '../components/Org.astro';
 import When from '../components/When.astro';
 import { cv, range, toYear, has } from '../lib/cv';
+import { sharePhoto } from '../lib/photo';
 
 const { site, person, interests, skills, experience, education, grants, awards, outreach, courses, other } = cv;
 
@@ -19,7 +20,7 @@ const jsonLd = {
   url: siteUrl,
   jobTitle: person.role,
   description: site.description,
-  ...(person.photo ? { image: new URL(person.photo.replace(/^\//, ''), siteUrl).href } : {}),
+  ...(sharePhoto ? { image: new URL(sharePhoto.src, siteUrl).href } : {}),
   affiliation: {
     '@type': 'ResearchOrganization',
     name: 'Leibniz Institute on Aging, Fritz Lipmann Institute (FLI)',

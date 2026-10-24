@@ -18,8 +18,8 @@ person:
     - I am a PhD candidate in bioinformatics in the Dönertaş Group at the Leibniz Institute on Aging, Fritz Lipmann Institute (FLI), in Jena. In my thesis, I combine Nanopore long-read sequencing, single-cell transcriptomics, and metagenomics to ask how the gut microbiome influences aging in the African turquoise killifish (Nothobranchius furzeri).
     - Before joining FLI, I spent seven years at Middle East Technical University (METU) in Ankara, where I studied aldo-keto reductases in colorectal cancer by in vitro and in silico methods. As a research assistant, I also coordinated two student laboratory courses; taught cell biology, genetics, epigenetics, and evolution; and ran the department's IT services, including its website.
   email: null
-  # sidebar portrait from /public; null shows initials
-  photo: /photo.jpg
+  # sidebar portrait from src/assets; null shows initials
+  photo: photo.jpg
   cvPdf: null                            # PDF in /public; null shows the print button
   links:
     - { label: Google Scholar, url: "https://scholar.google.com/citations?user=Qp5k8zYAAAAJ" }

@@ -160,9 +160,6 @@ const counts: Record<string, number> = {
 /** Initials for the photo fallback, e.g. "İsmail Güderer" -> "İG". */
 export const initials = cv.person.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('');
 
-/** Prefix a site-relative path with the deploy base. */
-export const asset = (p: string) => `${import.meta.env.BASE_URL.replace(/\/$/, '')}${p.startsWith('/') ? p : `/${p}`}`;
-
 /** Sections that have content; empty ones are hidden from page and nav. */
 export const sections = allSections.filter((s) => counts[s.id] > 0);
 export const has = (id: string) => counts[id] > 0;
