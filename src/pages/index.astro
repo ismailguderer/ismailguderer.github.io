@@ -205,7 +205,7 @@ const byDate = <T extends { date?: string; year?: string; start?: string }>(arr:
 
       <footer class="foot muted small">
         <p>Updated {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}. Built with Astro.</p>
-        <p>Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
+        <p><a href={`${import.meta.env.BASE_URL}privacy/`}>Privacy</a> · Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="license noopener">CC BY 4.0</a></p>
       </footer>
     </main>
   </div>
