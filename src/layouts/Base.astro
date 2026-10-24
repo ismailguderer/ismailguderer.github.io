@@ -34,7 +34,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
-    <!-- GoatCounter analytics: cookieless; count.js skips localhost; no count when Do Not Track is on -->
+    <!-- GoatCounter analytics, skipped when Do Not Track is on -->
     <script is:inline>
       window.goatcounter = { no_onload: 'doNotTrack' in navigator && navigator.doNotTrack === '1' };
     </script>
