@@ -1,0 +1,100 @@
+---
+import Base from './Base.astro';
+import { cv } from '../lib/cv';
+interface Props { title: string; description: string; brand?: boolean; }
+const { title, description, brand = true } = Astro.props;
+const home = import.meta.env.BASE_URL;
+const app = { name: 'BIO-ASSIST', manifest: '/bio-assist/manifest.webmanifest', icon: '/bio-assist/icon-180.png' };
+---
+<Base title={title} description={description} app={app}>
+  <div class="tools-page">
+    <header class="tools-top">
+      <a class="crumb" href={home}>← {cv.person.name}</a>
+      <button class="theme" type="button" data-theme-toggle><span data-theme-label>Theme: Auto</span></button>
+    </header>
+    {brand && (
+      <a class="brand-name" href="/bio-assist/">
+        <img src="/bio-assist/icon-192.png" width="48" height="48" alt="" />
+        <span>BIO-ASSIST<span class="brand-sub">Wet Lab Toolkit</span></span>
+      </a>
+    )}
+    <main id="main" class="tools-main">
+      <slot />
+    </main>
+    <footer class="tools-foot muted small">
+      <p>
+        <a href="https://github.com/ismailguderer/bio-assist" target="_blank" rel="noopener">Source on GitHub</a> ·
+        <a href={`${home}privacy/`}>Privacy</a>
+      </p>
+    </footer>
+  </div>
+</Base>
+
+<script>
+  import { bindThemeToggle } from '../scripts/theme';
+  bindThemeToggle();
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/bio-assist/sw.js', { scope: '/bio-assist/' }).catch(() => {});
+    });
+  }
+</script>
+
+<style is:global>
+  .tools-page {
+    /* aliases .ba does not redefine, so the mapping below never references itself */
+    --site-accent: var(--accent);
+    --site-on-accent: var(--on-accent);
+    max-width: 46rem; margin: 0 auto; padding: 0 var(--s4);
+  }
+  .tools-page .ba.ba.ba {
+    --bg-primary: var(--bg);
+    --bg-secondary: var(--surface);
+    --bg-tertiary: var(--surface);
+    --bg-input: var(--bg);
+    --bg-result: var(--surface);
+    --border-primary: var(--line);
+    --border-accent: var(--site-accent);
+    --text-primary: var(--ink);
+    --text-secondary: var(--muted);
+    --text-muted: var(--muted);
+    --accent: var(--site-accent);
+    --accent-hover: var(--site-accent);
+    --accent-muted: var(--accent-soft);
+    --accent-text: var(--site-accent);
+    --on-accent: var(--site-on-accent);
+    --table-header-border: var(--site-accent);
+    --table-row-border: var(--line);
+    --result-label: var(--site-accent);
+    --result-value: var(--ink);
+    --font-body: var(--text);
+    --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    --radius-sm: var(--r);
+    --radius-md: var(--r);
+  }
+</style>
+
+<style>
+  .tools-top {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--s4);
+    padding: var(--s4) 0 var(--s2);
+  }
+  .crumb, .theme { min-height: 44px; display: inline-flex; align-items: center; color: var(--muted); font-size: 0.95rem; }
+  .brand-name {
+    display: inline-flex; align-items: center; gap: var(--s3); margin: var(--s3) 0 var(--s5);
+    font-size: 2.2rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1; color: var(--ink);
+  }
+  .brand-name img { width: 1.35em; height: 1.35em; border-radius: 0.25em; flex: none; }
+  .brand-sub {
+    display: block; margin-top: 0.1em; margin-left: 0.15em; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .brand-name:hover { text-decoration: none; color: var(--accent); }
+  .theme { font: inherit; font-size: 0.95rem; background: none; border: 0; cursor: pointer; padding: 0; }
+  .theme:hover { color: var(--accent); }
+  .tools-main { padding: 0 0 var(--s7); }
+  .tools-foot {
+    display: flex; justify-content: flex-end;
+    padding: var(--s4) 0 var(--s6); border-top: 1px solid var(--line);
+  }
+</style>

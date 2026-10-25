@@ -25,13 +25,19 @@ The script downloads the table, writes `src/data/squiggle.json`, and prints the 
 
 ## Run Locally
 
-Requires Node 22.22 or newer.
+Requires Node 22.22 or newer, and a clone of [bio-assist](https://github.com/ismailguderer/bio-assist) next to this repo (the build pulls its tools from there; set `BIO_ASSIST_DIR` to use another location).
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
 npm run build      # production build into dist/
 ```
+
+## BIO-ASSIST
+
+The wet lab calculators at `/bio-assist/` come from the separate `bio-assist` repo. The deploy workflow checks that repo out and renders each tool as a React island inside this site's layout, one page per tool. The site rebuilds on every push here and whenever a push to `bio-assist` sends a `bio-assist-updated` event.
+
+The tool pages register a service worker (`/bio-assist/sw.js`) and a web app manifest, so BIO-ASSIST can be installed and used offline.
 
 ## First Deploy
 
@@ -54,6 +60,9 @@ For a project repo (`github.com/<username>/cv`), also add `base: '/cv'` in `astr
 | `src/lib/squiggle.ts` | Draws the header trace from `squiggle.json` |
 | `src/components/` | Nav, Hero (trace, name, news), Tracks (timeline), Publications |
 | `src/styles/global.css` | Color, font, and spacing tokens; light, dark, and print styles |
+| `src/pages/bio-assist/` | BIO-ASSIST tool index, one page per tool, and the service worker |
+| `src/layouts/Tools.astro` | Layout for the BIO-ASSIST pages; maps the site colors onto the tools |
+| `public/bio-assist/` | Web app manifest and icons |
 
 ## Customize
 

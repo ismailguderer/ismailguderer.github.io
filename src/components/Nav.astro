@@ -135,6 +135,8 @@ const { person } = cv;
 </style>
 
 <script>
+  import { bindThemeToggle } from '../scripts/theme';
+
   // mobile menu
   const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
   const rail = document.getElementById('rail');
@@ -147,20 +149,7 @@ const { person } = cv;
   rail?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
 
-  // theme: auto -> light -> dark -> auto
-  const root = document.documentElement;
-  const label = document.querySelector('[data-theme-label]');
-  const order = ['auto', 'light', 'dark'] as const;
-  const current = () => (root.dataset.theme as 'light' | 'dark' | undefined) ?? 'auto';
-  const names = { auto: 'Auto', light: 'Light', dark: 'Dark' } as const;
-  const render = () => { if (label) label.textContent = `Theme: ${names[current()]}`; };
-  render();
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-    const next = order[(order.indexOf(current()) + 1) % order.length];
-    if (next === 'auto') delete root.dataset.theme; else root.dataset.theme = next;
-    try { next === 'auto' ? localStorage.removeItem('theme') : localStorage.setItem('theme', next); } catch {}
-    render();
-  });
+  bindThemeToggle();
 
   document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 

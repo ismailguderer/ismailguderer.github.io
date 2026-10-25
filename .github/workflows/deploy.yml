@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [bio-assist-updated]
 
 permissions:
   contents: read
@@ -19,12 +21,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: ismailguderer/bio-assist
+          path: bio-assist-src
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          BIO_ASSIST_DIR: ${{ github.workspace }}/bio-assist-src
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -1,0 +1,15 @@
+{
+  "name": "BIO-ASSIST",
+  "short_name": "BIO-ASSIST",
+  "description": "Wet lab toolkit for everyday bench work.",
+  "start_url": "/bio-assist/",
+  "scope": "/bio-assist/",
+  "display": "standalone",
+  "background_color": "#eef1f5",
+  "theme_color": "#2c6696",
+  "icons": [
+    { "src": "/bio-assist/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/bio-assist/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/bio-assist/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

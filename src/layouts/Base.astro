@@ -1,8 +1,9 @@
 ---
 import '../styles/global.css';
 import { sharePhoto } from '../lib/photo';
-interface Props { title: string; description: string; jsonLd?: object; }
-const { title, description, jsonLd } = Astro.props;
+interface App { name: string; manifest: string; icon: string; }
+interface Props { title: string; description: string; jsonLd?: object; app?: App; }
+const { title, description, jsonLd, app } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
@@ -16,7 +17,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="license" href="https://creativecommons.org/licenses/by/4.0/" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href={app?.icon ?? '/apple-touch-icon.png'} />
+    {app && (
+      <>
+        <link rel="manifest" href={app.manifest} />
+        <meta name="apple-mobile-web-app-title" content={app.name} />
+      </>
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

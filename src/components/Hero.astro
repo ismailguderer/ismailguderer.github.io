@@ -44,6 +44,12 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
     })}
   </ul>
 
+  <a class="app" href="/bio-assist/">
+    <img src="/bio-assist/icon-192.png" width="44" height="44" alt="" />
+    <span class="app-text">BIO-ASSIST<span class="app-sub">Wet Lab Toolkit</span></span>
+    <span class="app-go" aria-hidden="true">→</span>
+  </a>
+
   {news.length > 0 && (
     <section class="news" aria-labelledby="news-h">
       <h2 id="news-h">News</h2>
@@ -110,6 +116,23 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
   .ic { width: 1em; height: 1em; flex: none; fill: var(--muted); transition: fill 0.15s ease; }
   .links a:hover .ic { fill: currentColor; }
 
+  .app {
+    display: inline-flex; align-items: center; gap: var(--s3); margin-top: var(--s6);
+    padding: var(--s3) var(--s5) var(--s3) var(--s3); border: 1px solid var(--line); border-radius: var(--r);
+    background: var(--surface); color: var(--ink); text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+  .app:hover { border-color: var(--accent); color: var(--ink); text-decoration: none; }
+  .app img { width: 2.75rem; height: 2.75rem; border-radius: 0.6rem; flex: none; }
+  .app-text { font-size: 1.6rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1; }
+  .app-sub {
+    display: block; margin-top: 0.1em; margin-left: 0.15em; font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+  }
+  .app-go { margin-left: var(--s3); font-size: 1.25rem; color: var(--muted); transition: transform 0.15s ease, color 0.15s ease; }
+  .app:hover .app-go { color: var(--accent); transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) { .app-go { transition: none; } .app:hover .app-go { transform: none; } }
+
   .news { margin-top: var(--s8); max-width: var(--measure); }
   .news h2 { font-size: clamp(1.35rem, 2.2vw, 1.6rem); padding-bottom: var(--s4); }   /* same as section headings; the list's top rule is its underline */
   .news ul { border-top: 1px solid var(--line); }
@@ -121,7 +144,7 @@ const pct = (x: number) => `${((x / W) * 100).toFixed(3)}%`;
   .news time { color: var(--muted); font-size: 0.9rem; padding-top: 0.12rem; }
 
   @media print {
-    .trace, .news { display: none; }
+    .trace, .news, .app { display: none; }
     .hero { padding-top: 0.15rem; }
     .name { font-size: 2.2rem; line-height: 1.25; padding-top: 0.1em; }
     .statement { font-size: 1.05rem; }

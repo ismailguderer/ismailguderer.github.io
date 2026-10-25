@@ -1,0 +1,42 @@
+---
+import Tools from '../../layouts/Tools.astro';
+import { ToolHost } from '@bio-assist/lib.js';
+import { TOOLS } from '@bio-assist/tools.js';
+
+export function getStaticPaths() {
+  return TOOLS.map((tool) => ({ params: { tool: tool.id }, props: { tool } }));
+}
+
+const { tool } = Astro.props;
+const siblings = TOOLS.filter((t) => t.group === tool.group);
+---
+<Tools title={`${tool.name} | BIO-ASSIST`} description={tool.description}>
+  <h1 class="title">{tool.name}</h1>
+  <p class="lead">{tool.lead}</p>
+  {siblings.length > 1 && (
+    <ul class="siblings" aria-label={`Other ${tool.group} tools`}>
+      {siblings.map((t) => (
+        <li><a href={`/bio-assist/${t.id}/`} aria-current={t.id === tool.id ? 'page' : undefined}>{t.name}</a></li>
+      ))}
+    </ul>
+  )}
+  <div class="tool">
+    <ToolHost client:only="react" id={tool.id} base="/bio-assist/">
+      <p slot="fallback" class="muted">Loading tool…</p>
+    </ToolHost>
+    <noscript><p class="muted">BIO-ASSIST needs JavaScript to calculate.</p></noscript>
+  </div>
+</Tools>
+
+<style>
+  .title { margin-top: var(--s2); font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 300; letter-spacing: -0.03em; line-height: 1.05; }
+  .lead { margin-top: var(--s2); color: var(--muted); }
+  .siblings { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
+  .siblings a {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 var(--s3);
+    border: 1px solid var(--line); border-radius: 999px; font-size: 0.875rem; color: var(--muted);
+  }
+  .siblings a:hover { text-decoration: none; border-color: var(--accent); color: var(--accent); }
+  .siblings a[aria-current='page'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .tool { margin-top: var(--s5); min-height: 20rem; }
+</style>
