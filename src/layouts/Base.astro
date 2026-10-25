@@ -1,9 +1,12 @@
 ---
 import '../styles/global.css';
 import { sharePhoto } from '../lib/photo';
-interface App { name: string; manifest: string; icon: string; }
+interface App { name: string; manifest: string; icon: string; shareImage: string; }
 interface Props { title: string; description: string; jsonLd?: object; app?: App; }
 const { title, description, jsonLd, app } = Astro.props;
+const share = app
+  ? { src: app.shareImage, type: 'image/png', size: 512 }
+  : sharePhoto && { src: sharePhoto.src, type: 'image/jpeg', size: 800 };
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
@@ -28,14 +31,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {sharePhoto && (
+    {share && (
       <>
-        <meta property="og:image" content={new URL(sharePhoto.src, Astro.site)} />
-        <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:width" content="800" />
-        <meta property="og:image:height" content="800" />
+        <meta property="og:image" content={new URL(share.src, Astro.site)} />
+        <meta property="og:image:type" content={share.type} />
+        <meta property="og:image:width" content={String(share.size)} />
+        <meta property="og:image:height" content={String(share.size)} />
         <meta property="og:image:alt" content={title} />
-        <meta name="twitter:image" content={new URL(sharePhoto.src, Astro.site)} />
+        <meta name="twitter:image" content={new URL(share.src, Astro.site)} />
       </>
     )}
     <meta name="twitter:card" content="summary" />

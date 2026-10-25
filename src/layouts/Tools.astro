@@ -4,7 +4,7 @@ import { cv } from '../lib/cv';
 interface Props { title: string; description: string; brand?: boolean; }
 const { title, description, brand = true } = Astro.props;
 const home = import.meta.env.BASE_URL;
-const app = { name: 'BIO-ASSIST', manifest: '/bio-assist/manifest.webmanifest', icon: '/bio-assist/icon-180.png' };
+const app = { name: 'BIO-ASSIST', manifest: '/bio-assist/manifest.webmanifest', icon: '/bio-assist/icon-180.png', shareImage: '/bio-assist/icon-maskable-512.png' };
 ---
 <Base title={title} description={description} app={app}>
   <div class="tools-page">
