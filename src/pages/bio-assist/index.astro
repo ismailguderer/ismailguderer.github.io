@@ -41,7 +41,7 @@ import { TOOLS, GROUPS } from '@bio-assist/tools.js';
   const iosHint = document.querySelector<HTMLElement>('[data-install-ios]')!;
   const installed = matchMedia('(display-mode: standalone)').matches || (navigator as { standalone?: boolean }).standalone === true;
   const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  let deferred: (Event & { prompt: () => Promise<void> }) | null = null;
+  let deferred: (Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }) | null = null;
   if (!installed && ios) { install.hidden = false; iosHint.hidden = false; }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
@@ -53,8 +53,8 @@ import { TOOLS, GROUPS } from '@bio-assist/tools.js';
   installBtn.addEventListener('click', async () => {
     if (!deferred) return;
     await deferred.prompt();
-    deferred = null;
-    install.hidden = true;
+    const { outcome } = await deferred.userChoice;
+    if (outcome === 'accepted') { deferred = null; install.hidden = true; }
   });
   window.addEventListener('appinstalled', () => { install.hidden = true; });
 

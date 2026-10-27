@@ -2,7 +2,7 @@ import { z } from 'astro/zod';
 import { load } from 'js-yaml';
 import raw from '../data/cv.yaml?raw';
 
-const str = z.coerce.string();
+const str = z.preprocess((v) => (typeof v === 'number' ? String(v) : v), z.string());
 const date = z.coerce.string().regex(/^\d{4}(-\d{2})?$/, 'use "YYYY" or "YYYY-MM"');
 const opt = <T extends z.ZodTypeAny>(s: T) => s.nullable().optional();
 const url = opt(z.string());
