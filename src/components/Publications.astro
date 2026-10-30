@@ -60,6 +60,7 @@ const doiOf = (p: { doi?: string | null; url?: string | null }) =>
   .doi { margin-top: 0.1rem; font-size: 0.78rem; color: var(--muted); overflow-wrap: anywhere; }
   .status { margin-left: var(--s2); padding: 0 0.45rem; font-size: 0.78rem; font-style: normal; }
   .pub[hidden], .year[hidden] { display: none; }
+  @media print { .pub[hidden] { display: list-item; } .year[hidden] { display: grid; } }
 </style>
 
 <script>

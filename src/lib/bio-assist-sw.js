@@ -12,6 +12,7 @@ self.addEventListener('install', (event) => {
     const seen = new Set();
     const queue = [];
     const add = (u) => { if (!seen.has(u)) { seen.add(u); queue.push(u); } };
+    add('/bio-assist/icon-192.png');
     for (const url of PAGES) {
       const res = await fetch(url, { cache: 'no-cache' });
       if (!res.ok) throw new Error(`precache ${url}: ${res.status}`);

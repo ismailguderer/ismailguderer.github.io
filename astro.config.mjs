@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,7 +17,7 @@ export default defineConfig({
   site: 'https://ismailguderer.github.io',
   // unminified HTML keeps view-source readable
   compressHTML: false,
-  integrations: [react()],
+  integrations: [react(), sitemap()],
   vite: {
     resolve: {
       alias: { '@bio-assist': resolve(bioAssist, 'src') },
